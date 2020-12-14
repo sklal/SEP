@@ -1,0 +1,791 @@
+---
+title: "Socio-economic & Physical Impact of COVID-19"
+output:
+  html_document
+    
+---
+<html>
+
+<head>
+<style>
+body{
+  font-family: Calibri;
+  font-size: 16pt;
+  color:white;
+  Font-weight:bold;
+}
+h1,h2,h3,h4,h5,h6{
+  font-family: Calibri;
+  font-size: 24pt;
+  color:white;
+  Font-weight:bold;
+}
+</style>
+<title>Title 1 2 3</title>
+</head>
+
+<body style="background-color:#0C0032;">
+<br>
+</br>
+
+```{r knitr-logo, out.width='60%', fig.show='hold', echo=FALSE, fig.align='center',out.extra='angle=90'}
+knitr::include_graphics(rep('C:\\Users\\sanat\\Downloads\\associatedpress-covid-impact-survey-public-data\\associatedpress-covid-impact-survey-public-data\\code\\covid.jpeg', 1))
+```
+<br>
+</br>
+
+<p><b>COVID-19 (Coronavirus) has affected day to day life and is slowing down the global economy. This
+pandemic has affected thousands of peoples, who are either sick or are being killed due to the spread of
+this disease. The most common symptoms of this viral infection are fever, cold, cough, bone pain and
+breathing problems, and ultimately leading to pneumonia. This, being a new viral disease affecting humans
+for the first time, vaccines are not yet available. From shifting to online mode of communication and travel
+restrictions to deterioration in mental health and increase in substance abuses. COVID-19 has presented
+itself with new challenges and through this report we will assess the socio-economic impact based on data
+from the Associate Press for the period between April-June 2020.</b>
+ </p>
+ <br>
+ </br>
+ 
+
+
+```{r, fig.dim=c(12, 8), echo=FALSE,warning=FALSE,results='hide',fig.keep='all',message=FALSE, fig.align='center',out.extra='angle=90'}
+
+library(readr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+df_April = read_csv("C:/Users/sanat/Downloads/associatedpress-covid-impact-survey-public-data/associatedpress-covid-impact-survey-public-data/01_April_30_covid_impact_survey.csv")
+df_May = read_csv("C:/Users/sanat/Downloads/associatedpress-covid-impact-survey-public-data/associatedpress-covid-impact-survey-public-data/02_May_12_covid_impact_survey.csv")
+df_June = read_csv("C:/Users/sanat/Downloads/associatedpress-covid-impact-survey-public-data/associatedpress-covid-impact-survey-public-data/03_June_9_covid_impact_survey.csv")
+df_May = subset(df_May, select = -c(NAT_WGT_COMB_POP,REG_WGT_COMB_POP, MARITAL,LGBT) )
+df_June = subset(df_June, select = -c(NAT_WGT_COMB_POP,REG_WGT_COMB_POP, MARITAL,LGBT) )
+df <- rbind(df_April,df_May,df_June )
+df = subset(df, select = -c(SU_ID,NATIONAL_WEIGHT,NATIONAL_WEIGHT_POP,P_PANEL,REGION_WEIGHT,REGION_WEIGHT_POP))
+states = df[,2]
+
+```
+
+
+
+##  {.tabset }
+
+
+<h1>Social Impact of COVID-19</h1>
+
+<p> The COVID-19 pandemic in the United States has had far-reaching consequences in the country that go beyond the spread of the disease itself in efforts to control it. One of the major impact is it's effect on the social well being of people.</p>
+
+<p>The below graphs represents the change in the frequency of interaction among family and friends due to COVID-19  </p>
+
+<br>
+</br>
+
+### <span style="color:#AC3B61"> Social Interactions data Before COVID-19 </span> 
+
+
+<br>
+</br>
+
+
+
+
+
+```{r, fig.dim=c(12, 8), echo=FALSE,warning=FALSE,results='hide',fig.keep='all',message=FALSE, fig.align='center',out.extra='angle=90'}
+df1 = data.frame(states,df[,5])
+names(df1)[1] <- "State"
+names(df1)[2] <- "Social.Int"
+df2 = data.frame(states,df[,7])
+names(df2)[1] <- "State"
+names(df2)[2] <- "Social.Int"
+
+df.Soc1 = rbind(df1,df2)
+df.Soc1 = df.Soc1 %>% drop_na() #Data of social interaction before COVID-19
+
+df.Soc1$Social.Int = gsub("[()]", "", df.Soc1$Social.Int)
+df.Soc1$Social.Int = gsub("[0-9]+", "", df.Soc1$Social.Int)
+
+df3 = data.frame(states,df[,4])
+names(df3)[1] <- "State"
+names(df3)[2] <- "Social.Int"
+
+df4 = data.frame(states,df[,6])
+names(df4)[1] <- "State"
+names(df4)[2] <- "Social.Int"
+
+df.Soc2 = rbind(df3,df4)   
+df.Soc2 = df.Soc2 %>% drop_na() #Data of social interaction during COVID-19
+df.Soc2$Social.Int = gsub("[()]", "", df.Soc2$Social.Int)
+df.Soc2$Social.Int = gsub("[0-9]+", "", df.Soc2$Social.Int)
+
+#theme_set(theme_classic())
+#ggsave("/tmp/plt.png", width = 25, height = 9, dpi = 120)
+g1 <- ggplot(df.Soc1, aes(Social.Int))
+g1 + geom_bar(aes(fill=State), width = 0.5) + geom_text(stat='count', aes(label=..count..), vjust=-1) +
+theme(axis.text.x = element_text(angle=90, vjust=0.8,size=14,face="bold")) 
+labs(title="Social Interaction with neighbors before COVID-19", 
+subtitle="Interaction counts in different states") 
+
+
+
+```
+<br>
+</br>
+<p>
+<ul>
+<li>The above graph shows the statistics of the frequentcy at which people interact with their friends and family before Covid-19 </li>
+<li> The population count for this study was 41940 </li>
+<li> A mix response was received from all the sates, with the category “Basically every day” chosen by 14195  individuals, being the most common choice of the residents, followed by “A few time a week” by 14002 number of people </li>
+<li> The third most popular response was “A few times a month” at count 7941 </li>
+</ul>
+ </p>
+
+
+<br>
+</br>
+
+
+### <span style="color:#AC3B61"> Social Interactions Data Post COVID-19 Outbreak </span> 
+<br>
+</br>
+
+
+```{r, fig.dim=c(12, 8), echo=FALSE,warning=FALSE,results='hide',fig.keep='all',message=FALSE, fig.align='center',out.extra='angle=90'}
+
+#ggsave("/tmp/plt.png", width = 25, height = 9, dpi = 120)
+g2 <- ggplot(df.Soc2, aes(Social.Int))
+g2 + geom_bar(aes(fill=State), width = 0.5)+ geom_text(stat='count', aes(label=..count..), vjust=-1) +
+theme(axis.text.x = element_text(angle=90, vjust=0.6, size=14,face="bold")) + 
+labs(title="Social Interaction with family and friends After COVID-19", 
+subtitle="Interaction counts in different states") 
+
+
+
+
+```
+<br>
+</br>
+<p>
+<ul>
+<li>The above graph shows the impact of covid19 on the social interaction among friends and family during April to June,2020 </li>
+<li> The population count for this study was 41940 </li>
+<li>A mix response was received from all the sates, with the category “Basically every day” chosen by 16703 individuals, being the most common choice of the residents, followed by “A few time a week” by 12108 number of people </li>
+<li>The third most popular response was “A few times a month” at count 7223 </li>
+</ul>
+ </p>
+
+<br>
+</br>
+
+
+
+## {.tabset }
+
+<h1>Physical Impact of COVID-19</h1>
+
+<p>The COVID-19 pandemic in the United States had an huge impact on the physical health of the people due the physical impact of contracting the disease  and due to lockdown and restrictions imposed by the government. An outcome of these restrictions is limited physical exercise. The below graphs represents the change in the physical health of people due to COVID-19. Factors like fever, chills, cough etc where studied. </p>
+<br>
+</br>
+
+### <span style="color:#AC3B61"> Physical Impact Before COVID-19 Outbreak </span>
+
+<br>
+</br>
+
+```{r,fig.dim=c(12, 8), echo=FALSE,warning=FALSE,results='hide',fig.keep='all',message=FALSE, fig.align='center',out.extra='angle=90'}
+
+df1.2 = data.frame(states,df[,10])  #before covid physical health
+names(df1.2)[1] <- "State"
+names(df1.2)[2] <- "Physical.Health"
+
+df2.2 = data.frame(states,df[,11]) 
+df3.2 = data.frame(states,df[,12]) 
+df4.2 = data.frame(states,df[,13]) 
+df5.2 = data.frame(states,df[,14]) 
+df6.2 = data.frame(states,df[,15]) 
+df7.2 = data.frame(states,df[,16]) 
+df8.2 = data.frame(states,df[,17]) 
+df9.2 = data.frame(states,df[,18]) 
+df10.2 = data.frame(states,df[,19]) 
+df11.2 = data.frame(states,df[,20]) 
+df12.2 = data.frame(states,df[,21]) 
+df13.2 = data.frame(states,df[,22]) 
+df14.2 = data.frame(states,df[,23]) 
+df15.2 = data.frame(states,df[,24]) 
+df16.2 = data.frame(states,df[,25])
+df17.2 = data.frame(states,df[,26]) 
+df18.2 = data.frame(states,df[,27]) 
+
+colnames(df18.2)= colnames(df17.2)=colnames(df16.2)=colnames(df15.2)=colnames(df14.2)=colnames(df13.2)=colnames(df12.2)=colnames(df11.2)=colnames(df10.2)=colnames(df9.2) =colnames(df8.2)=colnames(df7.2)=colnames(df6.2)=colnames(df5.2)=colnames(df4.2)=colnames(df3.2)=colnames(df2.2)=colnames(df1.2)
+
+df.Phy = rbind(df2.2,df3.2,df3.2,df4.2,df5.2,df6.2,df7.2,df8.2,df9.2,df10.2,df11.2,df12.2,df13.2,df14.2,df15.2,df16.2,df17.2,df18.2)
+
+df1.2 = df1.2 %>% drop_na()   #Data of Physical Health Before COVID-19
+df.Phy = df.Phy %>% drop_na() #Data of Physical Health impact during COVID-19
+
+
+df1.2$Physical.Health = gsub("[()]", "", df1.2$Physical.Health)
+df1.2$Physical.Health = gsub("[0-9]+", "", df1.2$Physical.Health)
+df.Phy$Physical.Health = gsub("[()]", "", df.Phy$Physical.Health)
+df.Phy$Physical.Health = gsub("[0-9]+", "", df.Phy$Physical.Health)
+
+
+agg <- count_(df1.2, names(df1.2))
+agg_ord <- mutate(agg, Physical.Health = reorder(Physical.Health, -n, sum))
+
+agg.2 <- count_(df.Phy, names(df.Phy))
+agg_ord.2 <- mutate(agg.2, Physical.Health = reorder(Physical.Health, -n, sum))
+
+
+
+p1 <- ggplot(agg_ord) +
+      geom_col(aes(x = 1, y = n, fill = Physical.Health), position = "fill") + 
+      coord_polar(theta = "y") +
+       scale_colour_hue()
+
+
+p1
+```
+
+<br>
+</br>
+<p>
+<ul>
+<li>The above graph shows the statistics of  the physical health of people before Covid-19</li>
+<li>The population count for this study was 20970. They were asked how the generally felt about their health prior to the covid19 outbreak </li>
+<li>A mix response was received, with the most common category “Very good” chosen by 8783 individuals, followed by “Good” by 5460 number of people </li>
+<li>The third most popular response was “Excellent” at count 447 </li>
+</ul>
+</p>
+<br>
+</br>
+
+### <span style="color:#AC3B61"> Physical Impact Post COVID-19 Outbreak </span>
+
+<br>
+</br>
+
+
+```{r, fig.dim=c(12, 8), echo=FALSE,warning=FALSE,results='hide',fig.keep='all',message=FALSE, fig.align='center',out.extra='angle=90'}
+
+
+
+
+p1.2 <- ggplot(agg_ord.2) +
+      geom_col(aes(x = 1, y = n, fill = Physical.Health), position = "fill") +
+      coord_polar(theta = "y") +
+       scale_colour_hue()
+
+p1.2
+```
+<br>
+</br>
+<p>
+<ul>
+<li>The above graph shows the statistics of  the physical health of people after the Covid-19 outbreak, during April to June,2020</li>
+<li>The population count for this study was 377460 and were asked if they have been feeling unwell or having covid symptoms in the past week </li>
+<li>A skewed response was received from all the states, with the category “No” chosen by 326696 i.e. 86.5%  of the total poluplation </li>
+<li>The second most common choice was “Yes”, by 46039 people </li>
+</ul>
+</p>
+<br>
+</br>
+
+## {.tabset }
+
+<h1>Impact of COVID-19 on the Mental Health</h1>
+<p> The coronavirus disease 2019 (COVID-19) pandemic may be stressful for people. Fear and anxiety about a new disease and what could happen can be overwhelming and cause strong emotions in adults and children. </p>
+
+<p>Public health actions, such as social distancing, can make people feel isolated and lonely and can increase stress and anxiety. However, these actions are necessary to reduce the spread of COVID-19. To study the mental health impact of COVID-19, a population count of 101076 were surveyed for any mental health concerns like depression. </p>
+
+<p> The below graphs represent the social and physical reactions during the covid outbreak. </p> 
+
+### <span style="color:#AC3B61"> Social Reactions </span>
+<br>
+</br>
+
+```{r, fig.dim=c(12, 8), echo=FALSE,warning=FALSE,results='hide',fig.keep='all',message=FALSE, fig.align='center',out.extra='angle=90'}
+
+#Social Reactions data
+
+df1.3 = data.frame(states,df[,28])
+df2.3 = data.frame(states,df[,29]) 
+df3.3 = data.frame(states,df[,30]) 
+df4.3 = data.frame(states,df[,31]) 
+
+names(df1.3)[1] <- "State"
+names(df1.3)[2] <- "Social.Reaction"
+colnames(df4.3)= colnames(df3.3)=colnames(df2.3)=colnames(df1.3)
+
+df.SRc = rbind(df1.3,df2.3,df3.3,df4.3)
+df.SRc = df.SRc %>% drop_na()
+df.SRc = subset(df.SRc,select = -c(State))
+df.SRc$Social.Reaction = gsub("[()]", "", df.SRc$Social.Reaction)
+df.SRc$Social.Reaction = sub('.', '', df.SRc$Social.Reaction)
+
+#df.SRc$Social.Reaction = gsub("[0-9]+", "", df.SRc$Social.Reaction)
+
+
+agg2 <- count_(df.SRc, names(df.SRc))
+agg_ord2 <- mutate(agg2, Social.Reaction = reorder(Social.Reaction, -n, sum))
+
+# Plot
+ggplot(agg_ord2, aes(x=Social.Reaction, y=n)) +
+  geom_segment( aes(x=Social.Reaction, xend=Social.Reaction, y=0, yend=n), color="grey") +
+  geom_point( color="orange", size=4) + 
+  theme_light() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.border = element_blank(),
+    axis.ticks.x = element_blank(),
+        axis.text.x = element_text(size  = 7,
+                                angle = 45,
+                                hjust = 1,
+                                vjust = 1)
+  ) +
+  xlab("#Days per week felt any Social Reaction") +
+  ylab("Count")
+
+
+
+```
+<br>
+</br>
+<p>
+<ul>
+<li>The above graph shows the statistics of the social reactions as an outcome of mental health concerns of people during Covid-19 </li>
+<li>The population count for 101076 people across different states of the US </li>
+<li>People were asked how many days in a week they experienced symptoms/reactions like depression, loneliness, loss of appetite etc as an impact of covid19 outbreak.</li>
+<li>The majority of the response was “Not at all or less than a day”, chosen by 62202 people, which is aprx. 61% of the population studied.</li> 
+<li>The second most common choice was “1-2” days, chosen by 22462 people, amounting to 21% </li> 
+<li>15.7% of the population(studied) felt the symptoms of mental health concerns for more than 3 days in a week.
+</ul>
+</p>
+
+<br>
+</br>
+
+### <span style="color:#AC3B61"> Physical Reactions </span>
+
+<br>
+</br>
+
+```{r, fig.dim=c(12, 8), echo=FALSE,warning=FALSE,results='hide',fig.keep='all',message=FALSE, fig.align='center',out.extra='angle=90'}
+
+
+df.PRc = data.frame(states,df[,32]) #Physical Reaction data
+
+names(df.PRc)[1] <- "State"
+names(df.PRc)[2] <- "Physical.Reaction"
+
+
+df.PRc = subset(df.PRc,select = -c(State))
+
+df.PRc$Physical.Reaction = gsub("[()]", "", df.PRc$Physical.Reaction)
+df.PRc$Physical.Reaction = sub('.', '', df.PRc$Physical.Reaction)
+df.PRc = df.PRc %>% drop_na()
+
+
+agg3 <- count_(df.PRc, names(df.PRc))
+agg_ord3 <- mutate(agg3, Physical.Reaction = reorder(Physical.Reaction, -n, sum))
+
+
+
+
+
+# Plot
+ggplot(agg_ord3, aes(x=Physical.Reaction, y=n)) +
+  geom_segment( aes(x=Physical.Reaction, xend=Physical.Reaction, y=0, yend=n), color="grey") +
+  geom_point( color="orange", size=4) +
+  theme_light() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.border = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.text.x = element_text(size  = 7,
+                                angle = 45,
+                                hjust = 1,
+                                vjust = 1)
+  ) +
+  xlab("#Days per week felt any Social Reaction") +
+  ylab("Count")
+
+
+```
+
+<br>
+</br>
+<p>
+<ul>
+<li>The above graph shows the statistics of the physical reactions as an outcome of mental health concerns of people during Covid-19 </li>
+<li>The population count for 25269 across different states of the US was studied </li>
+<li>People were asked how many days in a week they experienced physical reactions such as sweating, trouble breathing, nausea as an impact of covid19 outbreak.</li>
+<li>The majority of the response was “Not at all or less than a day”, chosen by 22734 people, which is aprx. 89% of the population studied. </li>
+<li> The second most common choice was “1-2” days, chosen by 1567 people, amounting to 6% </li> 
+<li> Aprx. 6% of the population(studied) felt the physical reactions of mental health concerns for more than 3 days in a week. </li>
+</ul>
+</p>
+
+
+#### {.tabset}
+
+<h1>Lifestyle Impact of COVID-19</h1>
+<p>The COVID-19 pandemic has led to a dramatic loss of human life worldwide and presents an unprecedented challenge to public health, food systems and the world of work. The economic and social disruption caused by the pandemic is devastating but so has been the effect on the lifestyle of people. Daily practices such as going to work or study, social gatherings, traveling etc has been altered and humans were forced to find alternatives such as work/study home, video calls, online streaming etc. to accommodated to the current situation.</p>
+
+<p>To study the impact on lifestyle due to covid19 , people were asked if they have made any of the following changes in lifestyle, as a response to the coronavirus</p>
+
+
+### <span style="color:#AC3B61"> Practiced Safety Precautions </span>
+
+<br>
+</br>
+
+```{r, fig.dim=c(12, 8), echo=FALSE,warning=FALSE,results='hide',fig.keep='all',message=FALSE, fig.align='center',out.extra='angle=90'}
+
+df1.4 = data.frame(states,df[,34])
+df2.4 = data.frame(states,df[,47]) 
+df3.4 = data.frame(states,df[,48]) 
+df4.4 = data.frame(states,df[,49]) 
+df5.4 = data.frame(states,df[,51]) 
+
+names(df1.4)[1] <- "State"
+names(df1.4)[2] <- "Safety.Pre"
+colnames(df5.4)= colnames(df4.4)= colnames(df3.4)=colnames(df2.4)=colnames(df1.4)
+
+df.SfPr = rbind(df1.4,df2.4,df3.4,df4.4,df5.4)
+df.SfPr = df.SfPr %>% drop_na()
+df.SfPr$Safety.Pre = gsub("[()]", "", df.SfPr$Safety.Pre)
+df.SfPr$Safety.Pre = gsub("[0-9]+", "", df.SfPr$Safety.Pre)
+
+df.SP = df.SfPr %>% 
+  group_by(State, Safety.Pre) %>% 
+  mutate(typeDateGroup = n())
+
+df.SP = distinct(df.SP)
+names(df.SP)[3] <- "Count"
+
+Plt <- ggplot(df.SP) +
+      geom_col(aes(x = State, y = Count, fill = Safety.Pre), position = "dodge")+
+  theme(axis.text.x = element_text(angle=90, vjust=0.8,size=10,face="bold"))+
+     scale_colour_hue()
+
+
+
+Plt
+```
+<br>
+</br>
+<p>
+<ul>
+<li>The above graph shows the if people take any safety precautions for covid19 in their day-to-day life </li>
+<li>126345 people were surveyed. 76% of the population chose “Yes” and 24% chose “No” </li>
+<li>California has the highest number of contributors to the “Yes” Category. </li>
+</ul>
+</p>
+<br>
+</br>
+### <span style="color:#AC3B61"> Work/Study </span>
+
+<br>
+</br>
+```{r, fig.dim=c(12, 8), echo=FALSE,warning=FALSE,results='hide',fig.keep='all',message=FALSE, fig.align='center',out.extra='angle=90'}
+
+df1.5 = data.frame(df[,36])
+names(df1.5)[1] <- "Response"
+df1.5["Change"]  = "Cancelled/Postponed work activities" 
+
+df2.5 = data.frame(df[,37])
+names(df2.5)[1] <- "Response"
+df2.5["Change"]  = "Cancelled/Postponed school activities" 
+
+df3.5 = data.frame(df[,41])
+names(df3.5)[1] <- "Response"
+df3.5["Change"]  = "Worked from home" 
+
+df4.5 = data.frame(df[,42])
+names(df4.5)[1] <- "Response"
+df4.5["Change"]  = "Studied from home" 
+
+df5.5 = data.frame(df[,74])
+names(df5.5)[1] <- "Response"
+df5.5["Change"]  = "Closure of work" 
+
+df5.5 = data.frame(df[,74])
+names(df5.5)[1] <- "Response"
+df5.5["Change"]  = "Closure of work" 
+
+df.Work = rbind(df1.5,df2.5,df3.5,df4.5,df5.5)
+df.Work = df.Work %>% drop_na()
+
+df.Work$Response = gsub("[()]", "", df.Work$Response)
+df.Work$Response = gsub("[0-9]+", "", df.Work$Response)
+
+df.Work = df.Work %>% 
+  group_by(Change, Response) %>% 
+  mutate(typeDateGroup = n())
+
+df.Work = distinct(df.Work)
+names(df.Work)[3] <- "Count"
+
+Plt2 <- ggplot(df.Work) +
+      geom_col(aes(x = Change, y = Count, fill = Response), position = "dodge")+
+theme(axis.text.x = element_text(angle=90, vjust=0.8,size=14,face="bold"))
+  scale_colour_hue()
+
+
+
+Plt2
+
+```
+
+<br>
+</br>
+<p>
+<ul>
+<li>The above graph shows the if people have made any changes to their work/study life, such as work from home, cancelled/postponed plans etc due to covid19 </li>
+<li>89598 out of 126345 people chose “No” which is aprx. 70% and aprx 28% of the people said “Yes” </li>
+<li>We can observe that the maximum contributor of “Yes” are the people who have worked from home. </li>
+</ul>
+</p>
+<br>
+</br>
+### <span style="color:#AC3B61"> Travel </span>
+<br>
+</br>
+
+```{r, fig.dim=c(12, 8), echo=FALSE,warning=FALSE,results='hide',fig.keep='all',message=FALSE, fig.align='center',out.extra='angle=90'}
+
+
+df1.6 = data.frame(df[,76])
+names(df1.6)[1] <- "Response"
+df1.6["Change"]  = "Quarantine requirements" 
+
+df2.6 = data.frame(df[,77])
+names(df2.6)[1] <- "Response"
+df2.6["Change"]  = "International travel restrictions" 
+
+df3.6 = data.frame(df[,78])
+names(df3.6)[1] <- "Response"
+df3.6["Change"]  = "Domestic travel restrictions " 
+
+df.Travel = rbind(df1.6,df2.6,df3.6)
+df.Travel = df.Travel %>% drop_na()
+
+df.Travel$Response = gsub("[()]", "", df.Travel$Response)
+df.Travel$Response = gsub("[0-9]+", "", df.Travel$Response)
+
+df.Travel = df.Travel %>% 
+  group_by(Change, Response) %>% 
+  mutate(typeDateGroup = n())
+
+df.Travel = distinct(df.Travel)
+names(df.Travel)[3] <- "Count"
+
+Plt3 <- ggplot(df.Travel) +
+      geom_col(aes(x = Change, y = Count, fill = Response), position = "dodge")+
+theme(axis.text.x = element_text(angle=90, vjust=0.8,size=14,face="bold"))+
+  scale_colour_hue()
+
+
+
+Plt3
+
+```
+<br>
+</br>
+<p>
+<ul>
+<li>The above graph shows the if people have made any changes to their domestic/international travel plans or if they were asked to quarantine due to covid contraction or symptoms. </li>
+
+<li>38888 out of 75807 people said “Yes” the have made changes to their travel plans,  which is aprx. 51% </li>
+<li> We can observe that the maximum contributor of “No” are the people who have altered their travel plans due to domestic travel restrictions </li>
+
+</ul>
+</p>
+<br>
+
+
+### <span style="color:#AC3B61"> Social Gathering/ Outing </span>
+<br>
+</br>
+
+```{r, fig.dim=c(12, 8), echo=FALSE,warning=FALSE,results='hide',fig.keep='all',message=FALSE, fig.align='center',out.extra='angle=90'}
+
+df1.7 = data.frame(df[,40])
+names(df1.7)[1] <- "Response"
+df1.7["Change"]  = "Avoided restaurants" 
+
+df2.7 = data.frame(df[,43])
+names(df2.7)[1] <- "Response"
+df2.7["Change"]  = "Canceled recreational activites" 
+
+df3.7 = data.frame(df[,45])
+names(df3.7)[1] <- "Response"
+df3.7["Change"]  = "Avoided public places" 
+
+df4.7 = data.frame(df[,67])
+names(df4.7)[1] <- "Response"
+df4.7["Change"]  = "Reduced public transportation " 
+
+df5.7 = data.frame(df[,69])
+names(df5.7)[1] <- "Response"
+df5.7["Change"]  = "Closure of bar" 
+
+df6.7 = data.frame(df[,70])
+names(df6.7)[1] <- "Response"
+df6.7["Change"]  = "Closure of restaurants"
+
+df7.7 = data.frame(df[,71])
+names(df7.7)[1] <- "Response"
+df7.7["Change"]  = "Closure of gyms" 
+
+df8.7 = data.frame(df[,73])
+names(df8.7)[1] <- "Response"
+df8.7["Change"]  = "Cancelled sport events" 
+
+
+df.SGth = rbind(df1.7,df2.7,df3.7,df4.7,df5.7,df6.7,df7.7,df8.7)
+
+df.SGth$Response = gsub("[()]", "", df.SGth$Response)
+df.SGth$Response = gsub("[0-9]+", "", df.SGth$Response)
+
+##nA
+
+df.SG = df.SGth %>% 
+  group_by(Response, Change) %>% 
+  mutate(typeDateGroup = n())
+df.SG = df.SG %>% drop_na()
+df.SGT = distinct(df.SG)
+names(df.SGT)[3] <- "Count"
+
+
+Plt4 <- ggplot(df.SGT) +
+      geom_col(aes(x = Change, y = Count, fill = Response), position = "dodge")+ theme(axis.text.x = element_text(angle=90, vjust=0.8,size=14,face="bold"))+
+  scale_colour_hue()
+
+
+
+Plt4
+
+
+
+```
+<br>
+</br>
+<p>
+<ul>
+<li> The above graph shows if people have made any changes to their social gathering/outing plans due to covid19 restriction. Such as not being able go to the gym, reduced use of public transport or places etc </li>
+
+<li>102789 out of 202152 people said “Yes” the have made changes to their travel plans, which is aprx. 50% and 47% chose “No”. </li>
+<li> We can observe that the major contributors of yes are avoided public places, avoiding restaurant and cancelation of recreational activities.</li>
+</ul>
+</p>
+<br>
+</br>
+
+## {.tabset}
+
+<h1>Economical Impact of COVID-19</h1>
+<p>
+The COVID-19 pandemic had a huge impact on the economical conditions of the population. The reduction of business due to restrictions and change in the trade system has resulted in loss of jobs or other sources of incomes, which resulted in economic hardships. As a result, people reached out various government and non-government bodies for financial, social and lifestyle assistance.</p> 
+
+<p>In the below graph, a population group of 202152 were studied. </p>
+</p>
+<br>
+</br>
+```{r, fig.dim=c(12, 8), echo=FALSE,warning=FALSE,results='hide',fig.keep='all',message=FALSE, fig.align='center',out.extra='angle=90'}
+
+df1.8 = data.frame(df[,96])
+names(df1.8)[1] <- "Response"
+df1.8["Aid"]  = "Unemployment insurance" 
+
+df2.8 = data.frame(df[,97])
+names(df2.8)[1] <- "Response"
+df2.8["Aid"]  = "SNAP" 
+
+df3.8 = data.frame(df[,98])
+names(df3.8)[1] <- "Response"
+df3.8["Aid"]  = "TANF" 
+
+df4.8 = data.frame(df[,99])
+names(df4.8)[1] <- "Response"
+df4.8["Aid"]  = "Social Security" 
+
+df5.8 = data.frame(df[,100])
+names(df5.8)[1] <- "Response"
+df5.8["Aid"]  = "Supplemental Social Security" 
+
+df6.8 = data.frame(df[,101])
+names(df6.8)[1] <- "Response"
+df6.8["Aid"]  = "GOVT: Medicaid/Medicare"
+
+df7.8 = data.frame(df[,102])
+names(df7.8)[1] <- "Response"
+df7.8["Aid"]  = "Other govt. aid" 
+
+df8.8 = data.frame(df[,103])
+names(df8.8)[1] <- "Response"
+df8.8["Aid"]  = "Assistance from a union" 
+
+
+df.Econ= rbind(df1.8,df2.8,df3.8,df4.8,df5.8,df6.8,df7.8,df8.8)
+df.Econ = df.Econ %>% drop_na()
+##na
+
+df.Econ$Response = gsub("[()]", "", df.Econ$Response)
+df.Econ$Response = gsub("[0-9]+", "", df.Econ$Response)
+
+df.Ec = df.Econ %>% 
+  group_by(Response, Aid) %>% 
+  mutate(Count = n())
+
+df.Ecc = distinct(df.Ec)
+
+ggplot(df.Ecc, aes(x = Aid,
+                     y = Count, 
+                     group=Response, 
+                     color=Response)) +
+  theme(axis.text.x = element_text(angle= 90, vjust=0.8))+
+  
+  geom_point(size = 3) +
+  
+  geom_line(size = 1) 
+
+
+
+
+```
+<br>
+</br>
+<p>
+<ul>
+<li>We can observe that majority of the people did not receive nor applied for any economical assistance, which is aprx. 86% of the studied population. </li>
+<li>9% of the population studied did receive assistance, i.e. 18401 people </li>
+</ul>
+</p>
+
+<br>
+</br>
+
+<h1>Conclusions</h1>
+<br>
+</br>
+<ul>
+<li>Through the Social impact section, we observed that there is a significant increase in  the frequency of social interaction among friends and families during covid19. We can conclude that, people preferred to stay connected with their loved ones during this difficult time. </li>
+<li>Before the COVID-19 outbreak, majority of the population chose their physical health as  "very good" and "excellent" and only few people chose "poor". However post covid 12% responded "Yes" to any physical impact of COVID-19</li> 
+<li> Through the Mental Health section, we observed that people have more social reaction of mental health issues, as compared to physical reactions. People who have felt mental heath issues and symptoms, have observed 10.3% more social reactions  as compared to physical reactions </li>
+<li>Daily life routine was deeply impacted but people are adapting to the new normal</li>
+<li>part ofpopulation were economically affected and apllied for Fiancial & Lifestyle assistance from Govt. & Non-govt. bodies</li>A  
+</ul>
+
+<br>
+</br>
+
+
+<h1>References</h1>
+<br>
+</br>
+<ul>
+<li><a href="https://apnews.com/"> Associated Press</a></li>
+<li><a href="https://cdc.gov/"> CDC</a></li>
+<li><a href="https://www.r-graph-gallery.com/"> R Graph Gallery</a></li>
+</ul>
